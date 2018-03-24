@@ -27,8 +27,7 @@ const Register = async (ctx) => {
   })
   let userResult = await User.create({
     name: post.name,
-    password: sha1(post.password),
-    token: createToken(post.name)
+    password: sha1(post.password)
   })
   if (userResult) {
     result.success = true
@@ -51,6 +50,8 @@ const Login = async ctx => {
   await User.findOne({
     name: post.name
   }).then(user => {
+    console.log('user', user)
+    console.log(sha1(post.password))
     if (!user) {
       result.message = '账号不存在'
       ctx.body = result

@@ -12,8 +12,10 @@ let query = (sql, values) => {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       if (err) {
-        resolve(err)
+        reject(err);
       } else {
+        console.log('sql', sql)
+        console.log('values', values)
         connection.query(sql, values, (err, results, fields) => {
           if (err) {
             reject(err)
@@ -32,34 +34,41 @@ let createTable = sql => {
 }
 
 // 通过ID查找数据
-// let findDataById = (table, id) => {
-//   let _sql = 'SELECT * FROM ?? WHERE id = ?'
-//   return query(_sql, [table, id])
-// }
+let findDataById = (table, id) => {
+  let _sql = 'SELECT * FROM ?? WHERE id = ?'
+  return query(_sql, [table, id])
+}
 
 // 分页查找
-// let findDataByPage = (table, keys, start, end) => {
-//   let _sql = 'SELECT ?? FROM ??  LIMIT ? , ?'
-//   return query(_sql, [keys, table, start, end])
-// }
+let findDataByPage = (table, keys, opts, start, end) => {
+  let _sql = 'SELECT ?? FROM ?? WHERE ? LIMIT ? , ?'
+  return query(_sql, [keys, table, opts, start, end])
+}
 
 // 插入
-// let insertData = (table, values) => {
-//   let _sql = 'INSERT INTO ?? SET ?'
-//   return query(_sql, [table, values])
-// }
+let insertData = (table, values) => {
+  let _sql = 'INSERT INTO ?? SET ?'
+  return query(_sql, [table, values])
+}
+// eg:
+// var post  = {id: 1, title: 'Hello MySQL'};
+// var query = connection.query('INSERT INTO posts SET ?', post, function (error, results, fields) {
+//   if (error) throw error;
+//   // Neat!
+// });
+// console.log(query.sql); // INSERT INTO posts SET `id` = 1, `title` = 'Hello MySQL'
 
 // 更新
-// let updateData = (table, values, id) => {
-//   let _sql = 'UPDATE ?? SET ? WHERE id = ?'
-//   return query(_sql, [table, values, id])
-// }
+let updateData = (table, values, id) => {
+  let _sql = 'UPDATE ?? SET ? WHERE id = ?'
+  return query(_sql, [table, values, id])
+}
 
 // 删除
-// let deleteDataById = (table, id) => {
-//   let _sql = 'DELETE FROM ?? WHERE id = ?'
-//   return query(_sql, [table, id])
-// }
+let deleteDataById = (table, id) => {
+  let _sql = 'DELETE FROM ?? WHERE id = ?'
+  return query(_sql, [table, id])
+}
 
 // let select = (table, keys) => {
 //   let _sql = 'SELECT ?? FROM ?? '
@@ -72,13 +81,13 @@ let createTable = sql => {
 // }
 
 module.exports = {
-  query,
-  createTable
+  createTable,
   // findDataById,
-  // findDataByPage,
-  // deleteDataById,
-  // insertData,
-  // updateData,
+  findDataByPage,
+  query,
+  insertData,
+  deleteDataById,
+  updateData
   // select,
   // count
 }

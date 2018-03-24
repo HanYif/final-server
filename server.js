@@ -11,6 +11,9 @@ const cors = require('kcors')
 const Router = require('koa-router')
 const index = require('./server/routers/index')
 const user = require('./server/routers/user')
+const questions = require('./server/routers/questions')
+const answers = require('./server/routers/answers')
+
 
 const app = new Koa()
 const port = process.env.PORT || 3000
@@ -28,6 +31,9 @@ app.use(cors())
 const router = new Router()
 router.use('', index.routes(), index.allowedMethods())
 router.use('/api', user.routes(), user.allowedMethods())
+router.use('/api', questions.routes(), questions.allowedMethods())
+router.use('/api', answers.routes(), answers.allowedMethods())
+
 app.use(router.routes()).use(router.allowedMethods())
 
 // 监听启动端口
