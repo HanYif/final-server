@@ -13,6 +13,7 @@ const index = require('./server/routers/index')
 const user = require('./server/routers/user')
 const questions = require('./server/routers/questions')
 const answers = require('./server/routers/answers')
+const jobs = require('./server/routers/jobs')
 
 
 const app = new Koa()
@@ -33,6 +34,7 @@ router.use('', index.routes(), index.allowedMethods())
 router.use('/api', user.routes(), user.allowedMethods())
 router.use('/api', questions.routes(), questions.allowedMethods())
 router.use('/api', answers.routes(), answers.allowedMethods())
+router.use('/api', jobs.routes(), jobs.allowedMethods())
 
 app.use(router.routes()).use(router.allowedMethods())
 

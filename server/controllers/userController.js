@@ -6,6 +6,27 @@ const checkToken = require('../middlewares/checkToken')
 const OAuthConfig = require('../../config/auth.config')
 const url = require('../middlewares/url')
 
+
+const GetUsers = async (ctx, next) => {
+  let options = ctx.query
+  console.log('opts', options)
+  let result = {
+    success: false,
+    message: '',
+    data: null
+  }
+  await User.findOne(options)
+    .then(users => {
+      console.log('users', users)
+      result.success = true
+      result.data = users
+      result.message = '查询成功'
+    }).catch(err => {
+      ctx.body = err
+    })
+  ctx.body = result
+}
+
 const Register = async (ctx) => {
   let result = {
     success: false,
@@ -137,4 +158,5 @@ module.exports = (router) => {
   router.get('/auth/github', GetGithub)
   router.get('/auth/github/callback', GetGithubAccessToken)
   router.get('/auth/github/user', GetGithubUser)
+  router.get('/users/getUsers', GetUsers)
 }

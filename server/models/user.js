@@ -15,9 +15,12 @@ const User = {
    */
   async findOne (options) {
     let sql = `SELECT * FROM user WHERE name="${options.name}" limit 1`
+    if (options.isHot) {
+      sql = `SELECT * FROM user order by hot desc limit 4`
+    }
     let result = await dbUtils.query(sql)
     if (Array.isArray(result) && result.length > 0) {
-      result = result[0]
+      // result = result[0]
     } else {
       result = null
     }

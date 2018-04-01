@@ -10,7 +10,6 @@ const GetQuestions = async (ctx, next) => {
   }
   await Questions.find(options)
     .then(questions => {
-      console.log('questions', questions)
       result.success = true
       result.data = questions
       result.message = '查询成功'

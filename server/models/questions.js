@@ -17,10 +17,15 @@ const Questions = {
    */
   async find (options) {
     options.pageSize = 10
-    options.pageNum = parseInt(options.pageNum)
+    options.pageNum = options.pageNum ? parseInt(options.pageNum) : 1
     let startIndex = (options.pageNum - 1) * options.pageSize
-    let sql = `SELECT * FROM questions WHERE status="${options.status}" limit ${startIndex}, ${options.pageSize}`
-    
+    let sql = `SELECT * FROM questions limit 100`
+    console.log('sql', sql)
+    console.log('opts', options)
+    if (options.isHot) {
+      let count = options.hotCount ? options.hotCount : 6
+      sql = `SELECT * FROM questions order by view_count desc limit ${count}`
+    }
     let result = await dbUtils.query(sql)
     if (Array.isArray(result) && result.length > 0) {
       return result
